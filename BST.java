@@ -125,18 +125,66 @@ class BST<T> {
     }
 
     public boolean DeleteNodeByKey(int key) {
-        return deleteKey(Root,key) != null;
+        BSTNode<T> parent = null;
+        BSTNode<T> current = Root;
+        // Поиск узла с заданным ключом
+        while (current != null) {
+            if (key == current.NodeKey) {
+                break;
+            }
+            parent = current;
+            if (key < current.NodeKey) {
+                current = current.LeftChild;
+            } else {
+                current = current.RightChild;
+            }
+        }
+        // Если узел с заданным ключом не найден
+        if (current == null) {
+            return false;
+        }
+        // Удаление найденного узла из дерева
+        if (current.LeftChild == null) {
+            if (parent == null) {
+                Root = current.RightChild;
+            } else if (current == parent.LeftChild) {
+                parent.LeftChild = current.RightChild;
+            } else {
+                parent.RightChild = current.RightChild;
+            }
+        } else if (current.RightChild == null) {
+            if (parent == null) {
+                Root = current.LeftChild;
+            } else if (current == parent.LeftChild) {
+                parent.LeftChild = current.LeftChild;
+            } else {
+                parent.RightChild = current.LeftChild;
+            }
+        } else {
+            BSTNode<T> successor = findSuccessor(current);
+            if (parent == null) {
+                Root = successor;
+            } else if (current == parent.LeftChild) {
+                parent.LeftChild = successor;
+            } else {
+                parent.RightChild = successor;
+            }
+            successor.LeftChild = current.LeftChild;
+        }
+        return true;
     }
 
     private BSTNode<T> deleteKey(BSTNode<T> node, int key) {
+
         if (node == null) {
             return null;
         }
+
         if (key < node.NodeKey) {
-            node.LeftChild = deleteKey(node.LeftChild, key);
+            node.LeftChild = deleteKey(node.LeftChild, key); // must reassign child here
         }
         else if (key > node.NodeKey) {
-            node.RightChild = deleteKey(node.RightChild, key);
+            node.RightChild = deleteKey(node.RightChild, key); // must reassign child here
         } else {
             if (node.LeftChild == null) {
                 return node.RightChild;
@@ -145,9 +193,25 @@ class BST<T> {
                 return node.LeftChild;
             }
             node.NodeKey = FinMinMax(node.RightChild,false).NodeKey;
-            node.RightChild = deleteKey(node.RightChild, node.NodeKey);
+            node.RightChild = deleteKey(node.RightChild, node.NodeKey); // this was correct
         }
         return node;
+    }
+
+    private BSTNode<T> findSuccessor(BSTNode<T> node) {
+        BSTNode<T> parent = node;
+        BSTNode<T> successor = node;
+        BSTNode<T> current = node.RightChild;
+        while (current != null) {
+            parent = successor;
+            successor = current;
+            current = current.LeftChild;
+        }
+        if (successor != node.RightChild) {
+            parent.LeftChild = successor.RightChild;
+            successor.RightChild = node.RightChild;
+        }
+        return successor;
     }
 
     public int Count() {
