@@ -174,30 +174,6 @@ class BST<T> {
         return true;
     }
 
-    private BSTNode<T> deleteKey(BSTNode<T> node, int key) {
-
-        if (node == null) {
-            return null;
-        }
-
-        if (key < node.NodeKey) {
-            node.LeftChild = deleteKey(node.LeftChild, key); // must reassign child here
-        }
-        else if (key > node.NodeKey) {
-            node.RightChild = deleteKey(node.RightChild, key); // must reassign child here
-        } else {
-            if (node.LeftChild == null) {
-                return node.RightChild;
-            }
-            else if (node.RightChild == null) {
-                return node.LeftChild;
-            }
-            node.NodeKey = FinMinMax(node.RightChild,false).NodeKey;
-            node.RightChild = deleteKey(node.RightChild, node.NodeKey); // this was correct
-        }
-        return node;
-    }
-
     private BSTNode<T> findSuccessor(BSTNode<T> node) {
         BSTNode<T> parent = node;
         BSTNode<T> successor = node;
