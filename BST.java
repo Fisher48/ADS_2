@@ -54,13 +54,14 @@ class BST<T> {
         return allNodes;
     }
 
+
     public BSTFind<T> findNode(BSTNode<T> searchingNode, int key) {
         BSTFind<T> foundedNode = new BSTFind<>();
-        if (Root == null) {
+        if (searchingNode == null) {
             return null;
         }
         if (key == searchingNode.NodeKey) {
-            foundedNode.Node = Root;
+            foundedNode.Node = searchingNode;
             foundedNode.NodeHasKey = true;
             return foundedNode;
         } else if (key < searchingNode.NodeKey) {
@@ -69,15 +70,14 @@ class BST<T> {
                 foundedNode.ToLeft = true;
                 return foundedNode;
             }
-            foundedNode = findNode(searchingNode.LeftChild, key);
+            return findNode(searchingNode.LeftChild, key);
         } else {
             if (searchingNode.RightChild == null) {
                 foundedNode.Node = searchingNode;
                 return foundedNode;
             }
-            foundedNode = findNode(searchingNode.RightChild, key);
+            return findNode(searchingNode.RightChild, key);
         }
-        return foundedNode;
     }
 
     public BSTFind<T> FindNodeByKey(int key) {
