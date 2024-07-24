@@ -3,7 +3,6 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BSTTest {
-    private Random rand = new Random();
 
     @Test
     public void SampleTest(){
@@ -82,18 +81,26 @@ public class BSTTest {
 
         // Добавили узел с ключом 10 в правому потомку
         tree.AddKeyValue(10, 10);
+
         findResult = tree.FindNodeByKey(10);
         System.out.println("Поиск существующего ключа 10: " + findResult.NodeHasKey);
+        System.out.println(tree.getAllNodes(tree.Root).toString());
 
         tree.AddKeyValue(100,100);
         findResult = tree.FindNodeByKey(100);
-        System.out.println(tree.getAllNodes(tree.Root).toString());
         System.out.println("Поиск существующего ключа 100: " + findResult.NodeHasKey);
         System.out.println("Направление: " + findResult.ToLeft);
 
         System.out.println("Удаление ключа 100:");
         tree.DeleteNodeByKey(100);
         System.out.println(tree.getAllNodes(tree.Root).toString());
+
+        BSTFind<Integer> emptyNode = tree.FindNodeByKey(99);
+        System.out.println("Поиск несуществующего ключа: " + emptyNode.Node.NodeKey);
+        System.out.println(emptyNode.NodeHasKey);
+        System.out.println("Поиск существующего ключа: " + findResult.Node.NodeKey);
+        System.out.println(findResult.NodeHasKey);
+
     }
 
 }
