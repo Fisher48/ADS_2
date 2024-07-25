@@ -55,55 +55,55 @@ class BST<T> {
     }
 
 
-    public BSTFind<T> findNode(BSTNode<T> searchingNode, int key) {
-        BSTFind<T> foundedNode = new BSTFind<>();
-        if (searchingNode == null) {
-            return null;
+    public BSTFind<T> findNode(BSTNode<T> node, int keySearch) {
+        BSTFind<T> foundNode = new BSTFind<>();
+        if (Root == null) {
+            return foundNode;
         }
-        if (key == searchingNode.NodeKey) {
-            foundedNode.Node = searchingNode;
-            foundedNode.NodeHasKey = true;
-            return foundedNode;
-        } else if (key < searchingNode.NodeKey) {
-            if (searchingNode.LeftChild == null) {
-                foundedNode.Node = searchingNode;
-                foundedNode.ToLeft = true;
-                return foundedNode;
+        if (node.NodeKey == keySearch) {
+            foundNode.Node = node;
+            foundNode.NodeHasKey = true;
+            return foundNode;
+        } else if (keySearch < node.NodeKey) {
+            if (node.LeftChild == null) {
+                foundNode.Node = node;
+                foundNode.ToLeft = true;
+                return foundNode;
             }
-            return findNode(searchingNode.LeftChild, key);
+            foundNode = findNode(node.LeftChild, keySearch);
         } else {
-            if (searchingNode.RightChild == null) {
-                foundedNode.Node = searchingNode;
-                return foundedNode;
+            if (node.RightChild == null) {
+                foundNode.Node = node;
+                foundNode.ToLeft = false;
+                return foundNode;
             }
-            return findNode(searchingNode.RightChild, key);
+            foundNode = findNode(node.RightChild, keySearch);
         }
+        return foundNode;
     }
 
     public BSTFind<T> FindNodeByKey(int key) {
         // ищем в дереве узел и сопутствующую информацию по ключу
-        if (Root == null) {
-            return new BSTFind<>();
-        }
         return findNode(Root, key);
     }
 
     public boolean AddKeyValue(int key, T val) {
         // добавляем ключ-значение в дерево
-        BSTFind<T> foundedNode = findNode(Root, key);
-        if (foundedNode == null) {
-            Root = new BSTNode<>(key, val, null);
+        BSTFind<T> foundNode = FindNodeByKey(key);
+        BSTNode<T> newNode = new BSTNode<>(key,val,foundNode.Node);
+        if (Root == null) {
+            Root = newNode;
             return true;
         }
-        if (foundedNode.Node == null) {
-            Root = new BSTNode<>(key, val, null);
-        } else if (foundedNode.NodeHasKey) {
-            return false; // если ключ уже есть
-        }
-        if (foundedNode.ToLeft) {
-            foundedNode.Node.LeftChild = new BSTNode<>(key, val, foundedNode.Node);
+        if (foundNode.Node == null) {
+            Root = newNode;
+            return true;
+        } else if (foundNode.NodeHasKey) {
+            return false;
+        } else if (foundNode.ToLeft) {
+            foundNode.Node.LeftChild = newNode;
         } else {
-            foundedNode.Node.RightChild = new BSTNode<>(key, val, foundedNode.Node);
+            foundNode.Node.RightChild = newNode;
         }
         return true;
     }
