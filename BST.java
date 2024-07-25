@@ -57,7 +57,7 @@ class BST<T> {
 
     public BSTFind<T> findNode(BSTNode<T> node, int keySearch) {
         BSTFind<T> foundNode = new BSTFind<>();
-        if (Root == null) {
+        if (Root == null || node == null) {
             return foundNode;
         }
         if (node.NodeKey == keySearch) {
@@ -143,34 +143,66 @@ class BST<T> {
         if (current == null) {
             return false;
         }
+
         // Удаление найденного узла из дерева
         if (current.LeftChild == null) {
             if (parent == null) {
                 Root = current.RightChild;
+                if (Root!= null) {
+                    Root.Parent = null;
+                }
             } else if (current == parent.LeftChild) {
                 parent.LeftChild = current.RightChild;
+                if (parent.LeftChild!= null) {
+                    parent.LeftChild.Parent = parent;
+                }
             } else {
                 parent.RightChild = current.RightChild;
+                if (parent.RightChild!= null) {
+                    parent.RightChild.Parent = parent;
+                }
             }
         } else if (current.RightChild == null) {
             if (parent == null) {
                 Root = current.LeftChild;
+                if (Root!= null) {
+                    Root.Parent = null;
+                }
             } else if (current == parent.LeftChild) {
                 parent.LeftChild = current.LeftChild;
+                if (parent.LeftChild!= null) {
+                    parent.LeftChild.Parent = parent;
+                }
             } else {
                 parent.RightChild = current.LeftChild;
+                if (parent.RightChild!= null) {
+                    parent.RightChild.Parent = parent;
+                }
             }
         } else {
             BSTNode<T> successor = findSuccessor(current);
             if (parent == null) {
                 Root = successor;
+                if (Root!= null) {
+                    Root.Parent = null;
+                }
             } else if (current == parent.LeftChild) {
                 parent.LeftChild = successor;
+                if (parent.LeftChild!= null) {
+                    parent.LeftChild.Parent = parent;
+                }
             } else {
                 parent.RightChild = successor;
+                if (parent.RightChild!= null) {
+                    parent.RightChild.Parent = parent;
+                }
             }
             successor.LeftChild = current.LeftChild;
+            if (successor.LeftChild!= null) {
+                successor.LeftChild.Parent = successor;
+            }
         }
+
         return true;
     }
 
