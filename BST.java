@@ -143,17 +143,16 @@ class BST<T> {
         if (current == null) {
             return false;
         }
-
         // Удаление найденного узла из дерева
         if (current.LeftChild == null) {
             if (parent == null) {
                 Root = current.RightChild;
-                if (Root!= null) {
+                if (Root != null) {
                     Root.Parent = null;
                 }
             } else if (current == parent.LeftChild) {
                 parent.LeftChild = current.RightChild;
-                if (parent.LeftChild!= null) {
+                if (parent.LeftChild != null) {
                     parent.LeftChild.Parent = parent;
                 }
             } else {
@@ -165,30 +164,22 @@ class BST<T> {
         } else if (current.RightChild == null) {
             if (parent == null) {
                 Root = current.LeftChild;
-                if (Root!= null) {
-                    Root.Parent = null;
-                }
+                Root.Parent = null;
             } else if (current == parent.LeftChild) {
                 parent.LeftChild = current.LeftChild;
-                if (parent.LeftChild!= null) {
-                    parent.LeftChild.Parent = parent;
-                }
+                parent.LeftChild.Parent = parent;
             } else {
                 parent.RightChild = current.LeftChild;
-                if (parent.RightChild!= null) {
-                    parent.RightChild.Parent = parent;
-                }
+                parent.RightChild.Parent = parent;
             }
         } else {
             BSTNode<T> successor = findSuccessor(current);
             if (parent == null) {
                 Root = successor;
-                if (Root!= null) {
-                    Root.Parent = null;
-                }
+                Root.Parent = null;
             } else if (current == parent.LeftChild) {
                 parent.LeftChild = successor;
-                if (parent.LeftChild!= null) {
+                if (parent.LeftChild != null) {
                     parent.LeftChild.Parent = parent;
                 }
             } else {
@@ -198,11 +189,10 @@ class BST<T> {
                 }
             }
             successor.LeftChild = current.LeftChild;
-            if (successor.LeftChild!= null) {
+            if (successor.LeftChild != null) {
                 successor.LeftChild.Parent = successor;
             }
         }
-
         return true;
     }
 
@@ -224,6 +214,89 @@ class BST<T> {
 
     public int Count() {
         return getAllNodes(Root).size(); // количество узлов в дереве
+    }
+
+    public ArrayList<BSTNode> WideAllNodes() {
+        ArrayList<BSTNode> list = new ArrayList<>();
+        Queue<BSTNode<T>> queue = new LinkedList<>();
+        queue.add(Root);
+        while (!queue.isEmpty()) {
+            BSTNode<T> node = queue.poll();
+            list.add(node);
+            if (node.LeftChild != null) {
+                queue.add(node.LeftChild);
+            }
+            if (node.RightChild != null) {
+                queue.add(node.RightChild);
+            }
+        }
+        return list;
+    }
+
+    public void printTree(BSTNode<T> node, int depth) {
+        if (node == null) {
+            return;
+        }
+        printTree(node.RightChild, depth + 1);
+        for (int i = 0; i < depth; i++) {
+            System.out.print("     ");
+        }
+        System.out.println(node.NodeValue);
+        printTree(node.LeftChild, depth + 1);
+    }
+
+    public ArrayList<BSTNode> deepAllNodesByOrder(BSTNode<T> node, int order){
+        ArrayList<BSTNode> list = new ArrayList<>();
+        switch (order) {
+            // In-order - первым будет самый маленький (так как мы сперва берём левые),
+            // а последним самый большой узел, то есть мы получаем отсортированные ключи.
+            case (0):
+                if (node.LeftChild != null) {
+                    list.addAll(deepAllNodesByOrder(node.LeftChild, order));
+                }
+                list.add(node);
+                if (node.RightChild != null) {
+                    list.addAll(deepAllNodesByOrder(node.RightChild, order));
+                }
+                return list;
+            // Post-order первыми выдаст листья, самые нижние узлы (так как корень берём в последнюю очередь), что удобно,
+            // если нам нужно проверять первыми именно листья и искать снизу вверх.
+            case (1):
+                if (node.LeftChild != null) {
+                    list.addAll(deepAllNodesByOrder(node.LeftChild, order));
+                }
+                if (node.RightChild != null) {
+                    list.addAll(deepAllNodesByOrder(node.RightChild, order));
+                }
+                list.add(node);
+                return list;
+            // Pre-order удобен, если мы хотим искать нужный ключ, начиная с корня, сверху вниз.
+            case (2):
+                list.add(node);
+                if (node.LeftChild != null) {
+                    list.addAll(deepAllNodesByOrder(node.LeftChild, order));
+                }
+                if (node.RightChild != null) {
+                    list.addAll(deepAllNodesByOrder(node.RightChild, order));
+                }
+                return list;
+            default:
+                throw new IllegalStateException("Unexpected value: " + order);
+        }
+    }
+    public ArrayList<BSTNode> DeepAllNodes(int order){
+        return deepAllNodesByOrder(Root, order);
+    }
+
+    public void invertTree(BSTNode<T> node){
+        if (node == null) {
+            return;
+        }
+        BSTNode<T> temp = node.LeftChild;
+        node.LeftChild = node.RightChild;
+        node.RightChild = temp;
+        invertTree(node.LeftChild);
+        invertTree(node.RightChild);
     }
 
 }
