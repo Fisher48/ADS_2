@@ -26,11 +26,14 @@ class aBST {
             }
         }
         if (key < Tree[ind]) {
-            return findKey(key,ind * 2 + 1);
+            ind = ind * 2;
+            return findKey(key,ind + 1);
         }
-        else {
-            return findKey(key,ind * 2 + 2);
+        else if (key > Tree[ind]) {
+            ind = ind * 2;
+            return findKey(key,ind + 2);
         }
+        return null;
     }
     public Integer FindKeyIndex(int key) {
         // ищем в массиве индекс ключа
@@ -45,10 +48,12 @@ class aBST {
         }
         if (x < 0) {
             return Math.abs(x);
-        } else {
-            Tree[x] = key;
-            return -x;
         }
+        if (Tree[Math.abs(x)] == null) {
+            Tree[x] = key;
+            return Math.abs(x);
+        }
+        return Math.abs(x);
         // индекс добавленного/существующего ключа или -1 если не удалось
     }
 
