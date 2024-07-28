@@ -42,10 +42,6 @@ class aBST {
         if (x == null) {
             return -1;
         }
-        if (x < 0) {
-            Tree[Math.abs(x)] = key;
-            return Math.abs(x);
-        }
         Tree[Math.abs(x)] = key;
         return Math.abs(x);
         // индекс добавленного/существующего ключа или -1 если не удалось
