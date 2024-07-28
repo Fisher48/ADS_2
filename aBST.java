@@ -18,22 +18,18 @@ class aBST {
             return null;
         }
         if (Tree[ind] == null) {
+            return -ind;
+        }
+        if (key == Tree[ind]) {
             return ind;
         }
-        if (Tree[ind] != null) {
-            if (Tree[ind] == key) {
-                return -ind;
-            }
-        }
         if (key < Tree[ind]) {
-            ind = ind * 2;
-            return findKey(key,ind + 1);
+            return findKey(key, ind * 2 + 1);
+        } else if (key > Tree[ind]){
+            return findKey(key, ind * 2 + 2);
+        } else {
+            return null;
         }
-        else if (key > Tree[ind]) {
-            ind = ind * 2;
-            return findKey(key,ind + 2);
-        }
-        return null;
     }
     public Integer FindKeyIndex(int key) {
         // ищем в массиве индекс ключа
@@ -47,10 +43,7 @@ class aBST {
             return -1;
         }
         if (x < 0) {
-            return Math.abs(x);
-        }
-        if (Tree[Math.abs(x)] == null) {
-            Tree[x] = key;
+            Tree[Math.abs(x)] = key;
             return Math.abs(x);
         }
         return Math.abs(x);
