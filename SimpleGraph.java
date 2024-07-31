@@ -39,13 +39,10 @@ class SimpleGraph {
     // в списке vertex
     public void RemoveVertex(int v) {
         // ваш код удаления вершины со всеми её рёбрами
+        vertex[v] = null;
         for (int i = 0; i < max_vertex; i++) {
-            for (int j = 0; j < m_adjacency.length; j++) {
-                if (i == v && j == 1) {
-                    vertex[i] = null;
-                    m_adjacency[i][j] = 0;
-                }
-            }
+            m_adjacency[v][i] = 0;
+            m_adjacency[i][v] = 0;
         }
     }
 
