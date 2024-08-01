@@ -112,6 +112,45 @@ class SimpleTree<T>
         return leafsCount;
     }
 
+    public void printTree(SimpleTreeNode<T> node, int depth){
+        if (node == null) {
+            return;
+        }
+        for (int i = 0; i < depth; i++) {
+            System.out.print("  ");
+        }
+        System.out.print("|");
+        for (int j = 0; j < depth; j++) {
+            System.out.print("_");
+        }
+        System.out.println(node.NodeValue);
+        if (node.Children != null) {
+            for (SimpleTreeNode<T> child : node.Children) {
+                printTree(child, depth + 1);
+            }
+        }
+    }
+
+    public ArrayList<T> EvenTrees()
+    {
+        ArrayList<T> deletedNodes = new ArrayList<>();
+        Queue<SimpleTreeNode<T>> queue = new ArrayDeque<>();
+        SimpleTreeNode<T> node = Root;
+        queue.add(node);
+        while (!queue.isEmpty()) {
+            node = queue.poll();
+            SimpleTree<T> tree = new SimpleTree<>(node);
+                if (tree.Count() % 2 == 0) {
+                    if (node.Parent != null) {
+                    deletedNodes.add(node.Parent.NodeValue);
+                    deletedNodes.add(node.NodeValue);
+                }
+                queue.addAll(node.Children);
+            }
+        }
+        return deletedNodes;
+    }
+
 }
 
 
