@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 
@@ -88,6 +87,47 @@ public class SimpleTreeTest {
         for (SimpleTreeNode<Object> node : tree.GetAllNodes()) {
             System.out.print(node.nodeLevel + " ");
         }
+
+    }
+
+    @Test
+    public void ForestEvenTreesTest(){
+        SimpleTree<Object> st = new SimpleTree<>(null);
+        SimpleTreeNode<Object> root = new SimpleTreeNode<>(1,null);
+        st.Root = root;
+        SimpleTreeNode<Object> node2 = new SimpleTreeNode<>(2,root);
+        SimpleTreeNode<Object> node3 = new SimpleTreeNode<>(3,null);
+        SimpleTreeNode<Object> node4 = new SimpleTreeNode<>(4,null);
+        SimpleTreeNode<Object> node5 = new SimpleTreeNode<>(5,null);
+        SimpleTreeNode<Object> node6 = new SimpleTreeNode<>(6,null);
+        SimpleTreeNode<Object> node7 = new SimpleTreeNode<>(7,null);
+        SimpleTreeNode<Object> node8 = new SimpleTreeNode<>(8,null);
+        SimpleTreeNode<Object> node9 = new SimpleTreeNode<>(9,null);
+        SimpleTreeNode<Object> node10 = new SimpleTreeNode<>(10,null);
+        SimpleTreeNode<Object> node11 = new SimpleTreeNode<>(11,null);
+        SimpleTreeNode<Object> node12 = new SimpleTreeNode<>(12,null);
+
+        st.AddChild(root, node2);
+        st.AddChild(root, node6);
+        st.AddChild(root, node11);
+
+        st.AddChild(node11, node12);
+
+        st.AddChild(node2, node3);
+
+        st.AddChild(node6, node7);
+        st.AddChild(node6, node8);
+
+        st.AddChild(node8, node9);
+        st.AddChild(node8, node10);
+
+        st.AddChild(node3, node4);
+        st.AddChild(node3, node5);
+
+        System.out.println(st.GetAllNodes().toString());
+        st.printTree(st.Root,0);
+        st.setLevelOnTree(st.Root,0);
+        System.out.println(st.EvenTrees());
 
     }
 
