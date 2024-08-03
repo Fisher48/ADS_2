@@ -2,8 +2,11 @@ import java.util.*;
 
 class Vertex {
     public int Value;
-    public Vertex(int val) {
+    public boolean Hit;
+    public Vertex(int val)
+    {
         Value = val;
+        Hit = false;
     }
 
     @Override
@@ -61,6 +64,41 @@ class SimpleGraph {
         // удаление ребра между вершинами v1 и v2
         m_adjacency[v1][v2] = 0;
         m_adjacency[v2][v1] = 0;
+    }
+
+    public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
+        // Узлы задаются позициями в списке vertex.
+        // Возвращается список узлов - путь из VFrom в VTo.
+        // Список пустой, если пути нет.
+        ArrayList<Vertex> path = new ArrayList<>();
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < max_vertex; i++) {
+            vertex[i].Hit = false;
+        }
+        stack.push(VFrom);
+        while (!stack.empty()) {
+            int ver = stack.peek();
+            vertex[ver].Hit = true;
+            if (VTo == ver) {
+                for (int x : stack) {
+                    path.add(vertex[x]);
+                }
+                return path;
+            }
+            boolean found = false;
+            for (int j = 0; j < max_vertex; j++) {
+                if (m_adjacency[ver][j] == 1 && !vertex[j].Hit) {
+                    found = true;
+                    vertex[j].Hit = true;
+                    stack.push(j);
+                    break;
+                }
+            }
+            if (!found) {
+                stack.pop();
+            }
+        }
+        return path;
     }
 }
 
