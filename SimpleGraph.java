@@ -100,6 +100,40 @@ class SimpleGraph {
         }
         return path;
     }
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+        // Узлы задаются позициями в списке vertex.
+        // Возвращается список узлов - путь из VFrom в VTo.
+        // Список пустой, если пути нет.
+        ArrayList<Vertex> path = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
+        int[] prevVert = new int[max_vertex];
+        Arrays.fill(prevVert,-1);
+        for (int i = 0; i < max_vertex; i++) {
+            vertex[i].Hit = false;
+            prevVert[i] = -1;
+        }
+        vertex[VFrom].Hit = true;
+        queue.add(VFrom);
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            if (current == VTo) {
+                while (current != -1) {
+                    path.addFirst(vertex[current]);
+                    current = prevVert[current];
+                }
+                return path;
+            }
+            for (int i = 0; i < max_vertex; i++) {
+                if (m_adjacency[i][current] == 1 && !vertex[i].Hit) {
+                    vertex[i].Hit = true;
+                    prevVert[i] = current;
+                    queue.add(i);
+                }
+            }
+        }
+        return path;
+    }
 }
 
 
