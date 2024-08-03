@@ -108,7 +108,6 @@ class SimpleGraph {
         ArrayList<Vertex> path = new ArrayList<>();
         Queue<Integer> queue = new LinkedList<>();
         int[] prevVert = new int[max_vertex];
-        Arrays.fill(prevVert,-1);
         for (int i = 0; i < max_vertex; i++) {
             vertex[i].Hit = false;
             prevVert[i] = -1;
