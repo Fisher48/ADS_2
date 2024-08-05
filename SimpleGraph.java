@@ -133,6 +133,31 @@ class SimpleGraph {
         }
         return path;
     }
+
+    public ArrayList<Vertex> WeakVertices() {
+        // возвращает список узлов вне треугольников
+        ArrayList<Vertex> weekVertList = new ArrayList<>();
+        int[] triangles = new int[max_vertex];
+        for (int i = 0; i < max_vertex; i++) {
+                for (int j = i + 1; j < max_vertex; j++) {
+                    if (m_adjacency[i][j] == 1) {
+                    for (int k = j + 1; k < max_vertex; k++) {
+                        if (m_adjacency[i][k] == 1 && m_adjacency[j][k] == 1) {
+                            triangles[i]++;
+                            triangles[j]++;
+                            triangles[k]++;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < max_vertex; i++) {
+            if (triangles[i] == 0 && vertex[i] != null) {
+                weekVertList.add(vertex[i]);
+            }
+        }
+        return weekVertList;
+    }
 }
 
 
