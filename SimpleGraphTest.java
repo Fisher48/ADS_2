@@ -140,4 +140,28 @@ public class SimpleGraphTest {
         System.out.println(graph.BreadthFirstSearch(0,3));
     }
 
+    @Test
+    public void WeekVerticesTest(){
+        SimpleGraph graph = new SimpleGraph(6);
+        graph.AddVertex(1);
+        graph.AddVertex(2);
+        graph.AddVertex(3);
+        graph.AddVertex(4);
+        graph.AddVertex(5);
+        graph.AddVertex(6);
+        graph.AddEdge(0, 1); graph.AddEdge(0, 2);
+        graph.AddEdge(1, 2);
+        graph.AddEdge(1, 3); graph.AddEdge(2, 3);
+        graph.AddEdge(3, 4); graph.AddEdge(4, 5);
+        for (int i = 0; i < graph.max_vertex; i++) {
+            for (int j = 0; j < graph.m_adjacency.length; j++) {
+                System.out.print(graph.m_adjacency[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println(graph.DepthFirstSearch(0,4));
+        System.out.println(graph.WeakVertices());
+
+    }
+
 }
